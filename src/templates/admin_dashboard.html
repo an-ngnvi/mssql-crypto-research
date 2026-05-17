@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài khoản</title>
+    <style>
+        /* Google Font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #29abe2, #90caf9);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            width: 90%;
+            max-width: 1000px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transform: scale(0.98);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out;
+            text-align: center;
+            position: relative;
+        }
+
+        body.loaded .container {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #33475b;
+            margin-bottom: 40px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            color: #455a64;
+        }
+
+        th {
+            background-color: #1e88e5;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        a.button, button {
+            background: linear-gradient(135deg, #1e88e5, #bbdefb);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        a.button:hover, button:hover {
+            background: linear-gradient(135deg, #bbdefb, #1e88e5);
+            transform: scale(1.05);
+        }
+
+        .actions form {
+            display: inline-block;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 40px;
+            color: #1e88e5;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 45%;
+            top: -100%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0);
+            animation: waveAnimation 8s infinite linear;
+        }
+
+        .wave:nth-child(2) {
+            background: rgba(255, 255, 255, 0.15);
+            animation-delay: 2s;
+        }
+
+        .wave:nth-child(3) {
+            background: rgba(255, 255, 255, 0.2);
+            animation-delay: 4s;
+        }
+
+        @keyframes waveAnimation {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) scale(1);
+            }
+        }
+
+        /* CSS cho hiệu ứng ngôi sao bay */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 2s linear infinite,
+                        fly 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translate(var(--startX), var(--startY)) scale(var(--startScale));
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--endX), var(--endY)) scale(var(--endScale));
+                opacity: 0;
+            }
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="loaded">
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <h1>Quản lý tài khoản</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên đăng nhập</th>
+                    <th>Địa chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Admin?</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for username, info in accounts.items() %}
+                <tr>
+                    <td>{{ username }}</td>
+                    <td>{{ info.address }}</td>
+                    <td>{{ info.phone }}</td>
+                    <td>{{ info.email }}</td>
+                    <td>{{ 'Có' if info.is_admin else 'Không' }}</td>
+                    <td class="actions">
+                        <a class="button" href="{{ url_for('edit_user', username=username) }}"><i class="fas fa-edit"></i> Sửa</a>
+                        {% if username != session['username'] %}
+                        <form method="post" action="{{ url_for('delete_user', username=username) }}" onsubmit="return confirm('Bạn chắc chắn muốn xoá tài khoản này?');">
+                            <button type="submit" class="delete-btn"><i class="fas fa-trash-alt"></i> Xoá</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="back-link">
+            <a class="button" href="{{ url_for('index') }}">← Về trang chủ</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            const numStars = 30;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3 + 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                const startX = Math.random() * (container.offsetWidth + 100) - 50;
+                const startY = Math.random() * (container.offsetHeight + 100) - 50;
+                const endX = Math.random() * (container.offsetWidth + 100) - 50;
+                const endY = Math.random() * (container.offsetHeight + 100) - 50;
+                const startScale = Math.random() * 0.8 + 0.2;
+                const endScale = Math.random() * 1.2 + 0.5;
+                star.style.setProperty('--startX', `${startX}px`);
+                star.style.setProperty('--startY', `${startY}px`);
+                star.style.setProperty('--endX', `${endX}px`);
+                star.style.setProperty('--endY', `${endY}px`);
+                star.style.setProperty('--startScale', startScale);
+                star.style.setProperty('--endScale', endScale);
+                const delay = Math.random() * 3;
+                star.style.animationDelay = `${delay}s`;
+                container.appendChild(star);
+            }
+
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>

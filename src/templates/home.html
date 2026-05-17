@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <style>
+        /* Google Font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #29abe2, #90caf9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            width: 80%;
+            max-width: 800px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transform: scale(0.98);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out;
+            text-align: center;
+            position: relative;
+        }
+
+        body.loaded .container {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        h1 {
+            color: #33475b;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            animation: blink 2s infinite alternate;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #455a64;
+        }
+
+        a {
+            color: #1e88e5;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.2s ease-in-out;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1.5px solid #1e88e5;
+            background-color: white;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        a:hover {
+            color: white;
+            background-color: #1e88e5;
+            transform: scale(1.05);
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 45%;
+            top: -100%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0);
+            animation: waveAnimation 8s infinite linear;
+        }
+
+        .wave:nth-child(2) {
+            background: rgba(255, 255, 255, 0.15);
+            animation-delay: 2s;
+        }
+
+        .wave:nth-child(3) {
+            background: rgba(255, 255, 255, 0.2);
+            animation-delay: 4s;
+        }
+
+        @keyframes waveAnimation {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) scale(1);
+            }
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 2s linear infinite,
+                        fly 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translate(var(--startX), var(--startY)) scale(var(--startScale));
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--endX), var(--endY)) scale(var(--endScale));
+                opacity: 0;
+            }
+        }
+
+        #clock {
+            font-size: 1.2rem;
+            color: #546e7a;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.9; }
+        }
+
+        .user-list {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .user-list th, .user-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            color: #455a64;
+        }
+
+        .user-list th {
+            background-color: #1e88e5;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-list tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .user-list td button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+            margin: 2px;
+        }
+
+        .user-list td button:hover {
+            transform: scale(1.05);
+        }
+
+        .user-list .edit-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .user-list .edit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .user-list .delete-btn {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .user-list .delete-btn:hover {
+            background-color: #c71c1c;
+        }
+
+        .user-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 10;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .user-info h2 {
+            color: #33475b;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            color: #455a64;
+        }
+
+        .info-item strong {
+            font-weight: 700;
+            color: #1e88e5;
+            margin-right: 5px;
+        }
+
+        #search-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #user-search {
+            padding: 10px;
+            border: 1px solid #90caf9;
+            border-radius: 8px;
+            width: 300px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #user-search:focus {
+            border-color: #1e88e5;
+            outline: none;
+            box-shadow: 0 0 5px rgba(30, 136, 229, 0.25);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="loaded">
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <h1 id="greeting">Chào mừng, {{ username }}!</h1>
+        <p>
+            <a href="{{ url_for('logout') }}">Đăng xuất</a>
+            <a href="{{ url_for('change_password') }}">Đổi mật khẩu</a>
+            {% if is_admin %}
+                <a href="{{ url_for('admin_dashboard') }}">Quản lý tài khoản</a>
+            {% endif %}
+        </p>
+
+        {% if is_admin %}
+        
+        <table class="user-list" id="user-list">
+            
+            <tbody>
+                {% for account in accounts %}
+                    <tr data-username="{{ account }}">
+                        <td>{{ account }}</td>
+                        <td id="address-{{ account }}">{{ accounts[account].address }}</td>
+                        <td id="phone-{{ account }}">{{ accounts[account].phone }}</td>
+                        <td id="email-{{ account }}">{{ accounts[account].email }}</td>
+                        <td>
+                            <button class="edit-btn" data-username="{{ account }}"><i class="fas fa-edit"></i> Sửa</button>
+                            <button class="delete-btn" data-username="{{ account }}"><i class="fas fa-trash-alt"></i> Xóa</button>
+                            <button class="view-info-btn" data-username="{{ account }}"><i class="fas fa-user"></i> Xem</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="user-info" id="user-info-container">
+            <h2 id="user-info-header">Thông tin người dùng</h2>
+            <div id="user-details">
+                <p class="info-item"><strong>Tên người dùng:</strong> <span id="info-username"></span></p>
+                <p class="info-item"><strong>Địa chỉ:</strong> <span id="info-address"></span></p>
+                <p class="info-item"><strong>Số điện thoại:</strong> <span id="info-phone"></span></p>
+                <p class="info-item"><strong>Email:</strong> <span id="info-email"></span></p>
+            </div>
+        </div>
+        {% else %}
+            <div class="user-info" id="user-info-container" style="display: block;">
+                <h2>Thông tin của bạn</h2>
+                <div id="user-details">
+                    <p class="info-item"><strong>Tên người dùng:</strong> <span id="info-username">{{ username }}</span></p>
+                    <p class="info-item"><strong>Địa chỉ:</strong> <span id="info-address">{{ address }}</span></p>
+                    <p class="info-item"><strong>Số điện thoại:</strong> <span id="info-phone">{{ phone }}</span></p>
+                    <p class="info-item"><strong>Email:</strong> <span id="info-email">{{ email }}</span></p>
+                </div>
+            </div>
+        {% endif %}
+
+        <div id="clock"></div>
+    </div>
+
+    <script>
+        function updateGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            let greetingText = "Chào ";
+            if (hour < 12) {
+                greetingText += "buổi sáng, {{ username }}!";
+            } else if (hour < 18) {
+                greetingText += "buổi chiều, {{ username }}!";
+            } else {
+                greetingText += "buổi tối, {{ username }}!";
+            }
+            document.getElementById('greeting').textContent = greetingText;
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            const numStars = 30;
+            const userListTable = document.getElementById('user-list');
+            const userInfoContainer = document.getElementById('user-info-container');
+            const viewInfoButtons = document.querySelectorAll('.view-info-btn');
+            const editButtons = document.querySelectorAll('.edit-btn');
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            const infoUsernameElement = document.getElementById('info-username');
+            const infoAddressElement = document.getElementById('info-address');
+            const infoPhoneElement = document.getElementById('info-phone');
+            const infoEmailElement = document.getElementById('info-email');
+            const userSearchInput = document.getElementById('user-search');
+            const tableRows = userListTable.getElementsByTagName('tr');
+            const isAdmin = "{{ is_admin }}";
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3 + 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                const startX = Math.random() * (container.offsetWidth + 100) - 50;
+                const startY = Math.random() * (container.offsetHeight + 100) - 50;
+                const endX = Math.random() * (container.offsetWidth + 100) - 50;
+                const endY = Math.random() * (container.offsetHeight + 100) - 50;
+                const startScale = Math.random() * 0.8 + 0.2;
+                const endScale = Math.random() * 1.2 + 0.5;
+                star.style.setProperty('--startX', `${startX}px`);
+                star.style.setProperty('--startY', `${startY}px`);
+                star.style.setProperty('--endX', `${endX}px`);
+                star.style.setProperty('--endY', `${endY}px`);
+                star.style.setProperty('--startScale', startScale);
+                star.style.setProperty('--endScale', endScale);
+                const delay = Math.random() * 3;
+                star.style.animationDelay = `${delay}s`;
+                container.appendChild(star);
+            }
+
+            updateGreeting();
+            updateClock();
+            document.body.classList.add('loaded');
+
+            if (isAdmin === "True") {
+                
+                if (userListTable) userListTable.classList.remove('hidden');
+                viewInfoButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const username = e.target.dataset.username;
+                        fetch('/get_user_info')
+                            .then(response => response.json())
+                            .then(data => {
+                                infoUsernameElement.textContent = username;
+                                infoAddressElement.textContent = data.address || 'Chưa có thông tin';
+                                infoPhoneElement.textContent = data.phone || 'Chưa có thông tin';
+                                infoEmailElement.textContent = data.email || 'Chưa có thông tin';
+                                userInfoContainer.style.display = 'block';
+                                document.body.appendChild(userInfoContainer);
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi lấy thông tin người dùng:', error);
+                                infoAddressElement.textContent = 'Lỗi khi tải thông tin';
+                                infoPhoneElement.textContent = 'Lỗi khi tải thông tin';
+                                infoEmailElement.textContent = 'Lỗi khi tải thông tin';
+                            });
+                    });
+                });
+
+                editButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const username = e.target.dataset.username;
+                        window.location.href = `/admin/edit/${username}`;
+                    });
+                });
+
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const username = e.target.dataset.username;
+                        if (username === "{{ session['username'] }}") {
+                            alert("Bạn không thể xóa tài khoản của chính mình!");
+                            return;
+                        }
+                        if (confirm(`Bạn có chắc chắn muốn xóa tài khoản ${username}?`)) {
+                            fetch(`/admin/delete/${username}`, {
+                                method: 'POST',
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    window.location.href = '/admin_dashboard';
+                                } else {
+                                    alert('Có lỗi xảy ra khi xóa tài khoản.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi xóa tài khoản:', error);
+                                alert('Có lỗi xảy ra khi xóa tài khoản.');
+                            });
+                        }
+                    });
+                });
+
+                
+            } else {
+                if (document.getElementById('search-container')) document.getElementById('search-container').classList.add('hidden');
+                if (userListTable) userListTable.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

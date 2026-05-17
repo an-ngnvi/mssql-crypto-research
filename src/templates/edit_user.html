@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa tài khoản: {{ username }}</title>
+    <style>
+        /* Google Font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #29abe2, #90caf9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transform: scale(0.98);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out;
+            text-align: center;
+            position: relative;
+        }
+
+        body.loaded .container {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        h1 {
+            color: #33475b;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        form {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #455a64;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: calc(100% - 30px);
+            padding: 12px;
+            border: 1.5px solid #90caf9;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus {
+            border-color: #1e88e5;
+            box-shadow: 0 0 10px rgba(30, 136, 229, 0.25);
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(135deg, #1e88e5, #bbdefb);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background: linear-gradient(135deg, #bbdefb, #1e88e5);
+            transform: scale(1.02);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1e88e5;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease, transform 0.2s ease-in-out;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1.5px solid #1e88e5;
+            background-color: white;
+        }
+
+        .back-link:hover {
+            color: white;
+            background-color: #1e88e5;
+            transform: scale(1.05);
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 45%;
+            top: -100%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0);
+            animation: waveAnimation 8s infinite linear;
+            z-index: -1;
+        }
+
+        .wave:nth-child(2) {
+            background: rgba(255, 255, 255, 0.15);
+            animation-delay: 2s;
+        }
+
+        .wave:nth-child(3) {
+            background: rgba(255, 255, 255, 0.2);
+            animation-delay: 4s;
+        }
+
+        @keyframes waveAnimation {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) scale(1);
+            }
+        }
+
+        /* CSS cho hiệu ứng ngôi sao bay */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 2s linear infinite,
+                        fly 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translate(var(--startX), var(--startY)) scale(var(--startScale));
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--endX), var(--endY)) scale(var(--endScale));
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body class="loaded">
+    <div class="container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <h1>Sửa tài khoản: {{ username }}</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" name="address" value="{{ data.address }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Số điện thoại:</label>
+                <input type="text" name="phone" value="{{ data.phone }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="{{ data.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="is_admin">Quyền admin:</label>
+                <select name="is_admin">
+                    <option value="0" {% if not data.is_admin %}selected{% endif %}>Không</option>
+                    <option value="1" {% if data.is_admin %}selected{% endif %}>Có</option>
+                </select>
+            </div>
+            <input type="submit" value="Lưu thay đổi">
+        </form>
+        <a href="{{ url_for('admin_dashboard') }}" class="back-link">← Quay lại trang quản lý</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            const numStars = 30;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3 + 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                const startX = Math.random() * (container.offsetWidth + 100) - 50;
+                const startY = Math.random() * (container.offsetHeight + 100) - 50;
+                const endX = Math.random() * (container.offsetWidth + 100) - 50;
+                const endY = Math.random() * (container.offsetHeight + 100) - 50;
+                const startScale = Math.random() * 0.8 + 0.2;
+                const endScale = Math.random() * 1.2 + 0.5;
+                star.style.setProperty('--startX', `${startX}px`);
+                star.style.setProperty('--startY', `${startY}px`);
+                star.style.setProperty('--endX', `${endX}px`);
+                star.style.setProperty('--endY', `${endY}px`);
+                star.style.setProperty('--startScale', startScale);
+                star.style.setProperty('--endScale', endScale);
+                const delay = Math.random() * 3;
+                star.style.animationDelay = `${delay}s`;
+                container.appendChild(star);
+            }
+
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>
