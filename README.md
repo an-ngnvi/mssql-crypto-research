@@ -1,7 +1,7 @@
 # 🔒 Nghiên Cứu Mật Mã Ứng Dụng Trong MS SQL Server
 
 **Đồ án môn học:** Mật mã ứng dụng  
-**Học kỳ - Năm học:** Học kỳ 2 (2024 - 2025) | Năm 2  
+**Học kỳ - Năm học:** Học kỳ 2 (2024 - 2025)  
 **Trường:** Đại học Sư phạm Kỹ thuật TP.HCM (HCMUTE)  
 **GVHD:** Trần Đắc Tốt  
 
